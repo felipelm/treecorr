@@ -1,0 +1,20 @@
+file_name: /home/hcamacho/anderson/treecorr_run_test/lens-cat_z1.fits
+file_name2: /home/hcamacho/anderson/treecorr_run_test/src-cat_z1.fits
+rand_file_name: /home/hcamacho/anderson/treecorr_run_test/ran-cat.fits
+
+ra_col: 'RA'
+dec_col: 'DEC'
+ra_units: deg
+dec_units: deg
+
+g1_col: 'GAMMA1'
+g2_col: 'GAMMA2'
+k_col: 'KAPPA'
+
+verbose: 2
+
+min_sep: 2.5
+max_sep: 250
+nbins: 20
+sep_units: arcmin
+bin_slop: 0.1
