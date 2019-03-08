@@ -1,4 +1,4 @@
-Executable  = /usr/bin/python
+Executable  = {executable}
 Universe   = vanilla
 output     = {logname}.out
 error      = {logname}.err
