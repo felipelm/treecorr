@@ -59,7 +59,7 @@ if process == 'nn':
     open_or_create_file(filename, run_text)
 
     submit_str = condor_str.format(logname=os.path.join(output_path, 'log{}'.format(f1)),
-                                   arguments=arguments, executable=filename)
+                                   arguments=filename)
     condor_filename = "{}_{}.condor".format(process, f1)
     filename = os.path.join(output_path, condor_filename)
     condor_files.append(filename)
@@ -75,7 +75,7 @@ else:
       open_or_create_file(filename, run_text)
 
       submit_str = condor_str.format(logname=os.path.join(output_path, 'log{}{}'.format(f1, f2)),
-                                     arguments=arguments, executable=filename)
+                                     arguments=filename)
       condor_filename = "{}_z{}z{}.condor".format(process, f1, f2)
       filename = os.path.join(output_path, condor_filename)
       condor_files.append(filename)
