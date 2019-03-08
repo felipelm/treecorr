@@ -4,8 +4,6 @@ output     = {logname}.out
 error      = {logname}.err
 Log        = {logname}.log
 arguments = {arguments}
-request_memory = 110000
-request_cpus = 48
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
 

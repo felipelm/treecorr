@@ -86,5 +86,6 @@ else:
 
       with open(filename, 'w') as outfile:
         outfile.write(submit_str)
- 
 
+for job in condor_files:
+  os.system('condor_submit {}'.format(job))
