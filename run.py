@@ -17,6 +17,15 @@ output = args.output
 input = args.input
 SIM = args.SIM
 
+def open_or_create_file(filename, text):
+    try:
+      os.makedirs(os.path.dirname(filename))
+    except:
+      ''
+
+    with open(filename, 'w') as outfile:
+      outfile.write(text)
+
 if not os.path.exists(input):
   print('Input diretory invalid')
   exit(1)
@@ -31,10 +40,11 @@ with open(condor_file, 'r') as infile:
     for line in infile:
         condor_str=condor_str+line
 
-executable = "/mnt/eups/packages/Linux64/treecorr/3.3.7+0/bin/corr2"
-
-x = condor_str.format(logname=os.path.join(output, 'log'),
-                      arguments='teste 13', executable=executable)
+run_str = str()
+run_file = 'run.sh'
+with open(run_file, 'r') as infile:
+    for line in infile:
+        run_str = run_str+line
 
 process_datetime = datetime.now().strftime("%Y-%M-%d_%H%M%S")
 condor_files=[]
@@ -43,25 +53,29 @@ if process == 'nn':
   for f1 in files.split(','):
     arguments = "nn.yaml file_name={input}/lens-cat_z{file1}.fits nn_file_name={output}/xi_nn_{file1}_{SIM}.fits".format(
         file1=f1, SIM=SIM, input=input, output=output_path)
+    run_text = run_str.format(arguments=arguments)
+    run_filename = "run{}_{}.sh".format(process, f1)
+    filename = os.path.join(output_path, run_filename)
+    open_or_create_file(filename, run_text)
+
     submit_str = condor_str.format(logname=os.path.join(output_path, 'log{}'.format(f1)),
-                                   arguments=arguments, executable=executable)
+                                   arguments=arguments, executable=filename)
     condor_filename = "{}_{}.condor".format(process, f1)
     filename = os.path.join(output_path, condor_filename)
     condor_files.append(filename)
-    try:
-      os.makedirs(os.path.dirname(filename))
-    except:
-      ''
-
-    with open(filename, 'w') as outfile:
-      outfile.write(submit_str)
+    open_or_create_file(filename, submit_str)
 else:
   for f1 in files.split(','):
     for f2 in files.split(','):
       arguments = "{process}.yaml file_name={input}/lens-cat_z{file1}.fits file_name2={input}/src-cat_z{file2}.fits {process}_file_name={output}/xi_{process}_{file1}{file2}_{SIM}.fits".format(
           file1=f1, file2=f2, SIM=SIM, process=process, input=input, output=output_path)
+      run_text = run_str.format(arguments=arguments)
+      run_filename = "run{}_{}{}.sh".format(process, f1, f2)
+      filename = os.path.join(output_path, run_filename)
+      open_or_create_file(filename, run_text)
+
       submit_str = condor_str.format(logname=os.path.join(output_path, 'log{}{}'.format(f1, f2)),
-                                    arguments=arguments, executable=executable)
+                                     arguments=arguments, executable=filename)
       condor_filename = "{}_z{}z{}.condor".format(process, f1, f2)
       filename = os.path.join(output_path, condor_filename)
       condor_files.append(filename)
@@ -73,7 +87,4 @@ else:
       with open(filename, 'w') as outfile:
         outfile.write(submit_str)
  
-print(condor_files)
-# os.system('ls')
-os.system('source /mnt/eups/linea_eups_setup.sh')
-os.system('setup treecorr 3.3.7+0')
+

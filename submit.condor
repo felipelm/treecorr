@@ -1,4 +1,4 @@
-Executable  = {executable}
+Executable  = /usr/bin/sh {executable}
 Universe   = vanilla
 output     = {logname}.out
 error      = {logname}.err
