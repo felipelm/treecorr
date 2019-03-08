@@ -51,8 +51,8 @@ condor_files=[]
 output_path = os.path.join(output, process_datetime)
 if process == 'nn':
   for f1 in files.split(','):
-    arguments = "nn.yaml file_name={input}/lens-cat_z{file1}.fits nn_file_name={output}/xi_nn_{file1}_{SIM}.fits".format(
-        file1=f1, SIM=SIM, input=input, output=output_path)
+    arguments = "{output_home}/nn.yaml file_name={input}/lens-cat_z{file1}.fits nn_file_name={output}/xi_nn_{file1}_{SIM}.fits".format(
+        file1=f1, SIM=SIM, input=input, output=output_path, output_home=output)
     run_text = run_str.format(arguments=arguments)
     run_filename = "run{}_{}.sh".format(process, f1)
     filename = os.path.join(output_path, run_filename)
@@ -67,8 +67,8 @@ if process == 'nn':
 else:
   for f1 in files.split(','):
     for f2 in files.split(','):
-      arguments = "{process}.yaml file_name={input}/lens-cat_z{file1}.fits file_name2={input}/src-cat_z{file2}.fits {process}_file_name={output}/xi_{process}_{file1}{file2}_{SIM}.fits".format(
-          file1=f1, file2=f2, SIM=SIM, process=process, input=input, output=output_path)
+      arguments = "{output_home}/{process}.yaml file_name={input}/lens-cat_z{file1}.fits file_name2={input}/src-cat_z{file2}.fits {process}_file_name={output}/xi_{process}_{file1}{file2}_{SIM}.fits".format(
+          file1=f1, file2=f2, SIM=SIM, process=process, input=input, output=output_path, output_home=output)
       run_text = run_str.format(arguments=arguments)
       run_filename = "run{}_{}{}.sh".format(process, f1, f2)
       filename = os.path.join(output_path, run_filename)
