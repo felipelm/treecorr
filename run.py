@@ -46,7 +46,7 @@ with open(run_file, 'r') as infile:
     for line in infile:
         run_str = run_str+line
 
-process_datetime = datetime.now().strftime("%Y-%M-%d_%H%M%S")
+process_datetime = process + "_" + datetime.now().strftime("%Y-%M-%d_%H%M%S")
 condor_files=[]
 output_path = os.path.join(output, process_datetime)
 if process == 'nn':
